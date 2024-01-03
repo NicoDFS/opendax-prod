@@ -164,6 +164,24 @@ namespace :service do
     @switch.call(args, method(:start), method(:stop))
   end
 
+  desc 'Run GraphQL service'
+  task :graphql, [:command] do |task, args|
+    args.with_defaults(:command => 'start')
+
+    def start
+      puts '----- Starting GraphQL service -----'
+      sh 'docker-compose up -d graphql'
+    end
+
+    def stop
+      puts '----- Stopping GraphQL service -----'
+      sh 'docker-compose rm -fs graphql'
+    end
+
+    @switch.call(args, method(:start), method(:stop))
+  end
+
+
   desc 'Run the frontend application'
   task :frontend, [:command] do |task, args|
     args.with_defaults(:command => 'start')
@@ -277,6 +295,7 @@ namespace :service do
     def start
       Rake::Task["service:proxy"].invoke('start')
       Rake::Task["service:backend"].invoke('start')
+      Rake::Task["service:graphql"].invoke('start')
       Rake::Task["service:influxdb"].invoke('start')
       puts 'Wait 5 second for backend'
       sleep(5)
@@ -291,6 +310,7 @@ namespace :service do
     def stop
       Rake::Task["service:proxy"].invoke('stop')
       Rake::Task["service:backend"].invoke('stop')
+      Rake::Task["service:graphql"].invoke('stop')
       Rake::Task["service:influxdb"].invoke('stop')
       Rake::Task["service:setup"].invoke('stop')
       Rake::Task["service:app"].invoke('stop')

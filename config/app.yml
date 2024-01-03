@@ -14,6 +14,7 @@ images:
   frontend: ghcr.io/nicodfs/kalydax/kalydax:latest #Our flutter frontend. 
   tower: quay.io/openware/tower:2.4.9
   rango: quay.io/openware/rango:2.4.3
+  graphql: nicodfs/graphql:latest
 finex:
   enabled: false
   image: quay.io/openware/finex:2.4.0-5334683
